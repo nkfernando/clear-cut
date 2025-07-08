@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearCut - Professional Background Removal & Image Editing Resource</title>
+    <!-- Google Fonts for a more professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles & Typography */
+        :root {
+            --primary-color: #4A90E2; /* A more vibrant blue */
+            --primary-dark: #357ABD;
+            --secondary-color: #5C6F8D; /* Darker text for better contrast */
+            --background-light: #F7F9FC;
+            --background-dark: #E0E6EF;
+            --card-background: #FFFFFF;
+            --border-color: #DDE2E7;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 6px 18px rgba(0, 0, 0, 0.12);
+            --success-color: #28A745;
+            --error-color: #DC3545;
+            --info-color: #17A2B8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-background);
+            padding: 20px 40px;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none; /* Ensure logo link is styled */
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px; /* Slightly rounded logo */
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+            background: var(--primary-color);
+        }
+
+        /* Main Content Sections */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column; /* Allow sections to stack */
+            justify-content: flex-start; /* Align content to the top */
+            align-items: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--background-light), var(--background-dark)); /* Subtle gradient */
+        }
+
+        section {
+            background-color: var(--card-background);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-medium);
+            text-align: center;
+            max-width: 900px; /* Increased max-width for content sections */
+            width: 100%;
+            margin-bottom: 40px; /* Space between sections */
+            transition: transform 0.3s ease;
+            display: none; /* Hidden by default, managed by JS */
+        }
+
+        section.active {
+            display: block; /* Show active section */
+        }
+
+        section:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+        }
+
+        h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        section p {
+            font-size: 18px;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        /* Home Section Specific (Tool) */
+        #home-section .container {
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-medium);
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+            margin-left: 60px;
+            transition: transform 0.3s ease;
+            background-color: var(--card-background); /* Explicitly set for tool container */
+        }
+
+        /* Drop Zone */
+        .drop-zone {
+            border: 3px dashed var(--primary-color); /* Thicker, primary dashed border */
+            background-color: var(--background-light);
+            padding: 40px 20px;
+            margin: 30px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px; /* Ensure sufficient height */
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            background-color: #e6f3ff;
+            border-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .drop-zone p {
+            color: var(--secondary-color);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .drop-zone .icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            text-decoration: none; /* For download link acting as a button */
+            display: inline-block; /* For download link acting as a button */
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background-color: var(--success-color); /* Green for download */
+            margin-left: 15px;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: #218838;
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Canvas & Download Link */
+        canvas {
+            max-width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            margin-top: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            display: block; /* Ensures it takes up full width when visible */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Messages */
+        .message {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none; /* Hidden by default */
+            font-size: 16px;
+        }
+
+        .message.error {
+            background-color: #FFEBEE; /* Light red background */
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        .message.loading {
+            background-color: #E3F2FD; /* Light blue background for loading */
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-color);
+        }
+
+        .message.info {
+            background-color: #E0F7FA; /* Light cyan background for info */
+            color: var(--info-color);
+            border: 1px solid var(--info-color);
+        }
+
+        /* Content Sections Styling */
+        .content-list {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 700px;
+        }
+
+        .content-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            background-color: var(--background-light);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            font-size: 17px;
+            color: var(--secondary-color);
+        }
+
+        .content-list li strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .content-list li p {
+            margin-bottom: 0;
+            font-size: 16px;
+        }
+
+        .blog-post {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 700px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .blog-post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .blog-post h4 {
+            font-size: 22px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .blog-post p {
+            font-size: 16px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .blog-post a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .blog-post a:hover {
+            color: var(--primary-dark);
+        }
+
+        .legal-content {
+            text-align: left;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .legal-content h3 {
+            font-size: 24px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .legal-content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .legal-content ol, .legal-content ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .legal-content li {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-background);
+            padding: 15px;
+            text-align: center;
+            color: var(--secondary-color);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        footer a {
+            color: inherit;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            nav a {
+                margin: 0 10px;
+                font-size: 15px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            section {
+                padding: 30px 20px;
+            }
+
+            .drop-zone p {
+                font-size: 18px;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+
+            #downloadLink {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+
+            .blog-post h4 {
+                font-size: 20px;
+            }
+
+            .content-list li, .legal-content p, .legal-content li {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 24px;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            nav a {
+                margin: 0;
+            }
+
+            section {
+                padding: 25px 15px;
+            }
+
+            .drop-zone {
+                min-height: 150px;
+                padding: 25px 15px;
+            }
+
+            .drop-zone .icon {
+                font-size: 40px;
+            }
+
+            .drop-zone p {
+                font-size: 16px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+            h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#home" class="logo" id="homeLogoLink">
+            <!-- Professional SVG Logo (a simple geometric shape with primary color) -->
+            <svg width="45" height="45" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="100" height="100" fill="#4A90E2" rx="10"/>
+                <path d="M 25 25 L 75 25 L 75 75 L 25 75 L 25 25 Z" fill="white"/>
+                <path d="M 50 25 L 75 25 L 25 75 L 50 75 Z" fill="#4A90E2"/>
+            </svg>
+            <h1>ClearCut</h1>
+        </a>
+        <nav>
+            <a href="#home" data-section="home-section">Home</a>
+            <a href="#features" data-section="features-section">Features</a>
+            <a href="#how-it-works" data-section="how-it-works-section">How It Works</a>
+            <a href="#blog" data-section="blog-section">Blog</a>
+            <a href="#about" data-section="about-section">About Us</a>
+            <a href="#faq" data-section="faq-section">FAQ</a>
+            <a href="#contact" data-section="contact-section">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section - Background Removal Tool -->
+        <section id="home-section" class="active">
+            <div class="container">
+                <h2>Effortless Background Removal</h2>
+                <p>Upload your image to get a clean, transparent background instantly. Perfect for product photos, portraits, and more!</p>
+                
+                <div class="drop-zone" id="dropZone">
+                    <span class="icon">&#x2B06;</span> <!-- Unicode upward arrow as an icon -->
+                    <p>Drag & Drop your image here</p>
+                    <p style="font-size: 16px; font-weight: 400; margin-bottom: 0;">or click to upload</p>
+                    <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp">
+                </div>
+
+                <button class="btn" id="removeBgBtn" disabled>Remove Background</button>
+                <p id="usageCountMessage" class="message info" style="display: none;"></p>
+                <div id="statusMessage" class="message loading"></div>
+                <div id="errorMessage" class="message error"></div>
+                
+                <canvas id="outputCanvas" style="display: none;"></canvas>
+                <a class="btn btn-secondary" id="downloadLink" style="display: none;">Download Image</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features-section">
+            <h2>Powerful Features of ClearCut</h2>
+            <p>Discover what makes ClearCut the ultimate tool for your image editing needs.</p>
+            <div class="content-list">
+                <ul>
+                    <li>
+                        <strong>Instant Background Removal:</strong> Get professional-quality transparent backgrounds in seconds with our advanced AI.
+                    </li>
+                    <li>
+                        <strong>High-Quality Output:</strong> Maintain image quality with crisp edges and smooth cutouts, perfect for any use case.
+                    </li>
+                    <li>
+                        <strong>User-Friendly Interface:</strong> Our intuitive drag-and-drop design makes background removal accessible to everyone, no technical skills required.
+                    </li>
+                    <li>
+                        <strong>Supports Multiple Formats:</strong> Upload JPG, PNG, and WEBP images with ease.
+                    </li>
+                    <li>
+                        <strong>Completely Free to Start:</strong> Enjoy up to 50 free background removals every month, ideal for personal projects and small businesses.
+                    </li>
+                    <li>
+                        <strong>Versatile Applications:</strong> Ideal for e-commerce product photos, social media graphics, professional headshots, marketing materials, and more.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works-section">
+            <h2>How ClearCut Works</h2>
+            <p>Get a transparent background in just three simple steps!</p>
+            <div class="content-list">
+                <ul>
+                    <li>
+                        <strong>1. Upload Your Image:</strong> Drag and drop your photo into the designated area or click to select a file from your device. ClearCut supports JPG, PNG, and WEBP formats.
+                    </li>
+                    <li>
+                        <strong>2. Click "Remove Background":</strong> Our intelligent AI instantly analyzes your image and precisely identifies the foreground elements, separating them from the background.
+                    </li>
+                    <li>
+                        <strong>3. Download Your Result:</strong> In moments, you'll see your image with a perfectly transparent background. Simply click the "Download Image" button to save your new file.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog-section">
+            <h2>ClearCut Blog - Tips & Tutorials</h2>
+            <p>Explore articles and guides to elevate your image editing skills and make the most of ClearCut.</p>
+            <div class="blog-post">
+                <h4>Mastering Product Photography with ClearCut</h4>
+                <p>Learn how to create stunning product images with clean, transparent backgrounds that boost your e-commerce sales. This guide covers lighting, angles, and post-processing tips...</p>
+                <a href="#">Read More</a>
+            </div>
+            <div class="blog-post">
+                <h4>5 Creative Ways to Use Transparent Backgrounds in Your Designs</h4>
+                <p>Transparent backgrounds aren't just for product shots! Discover how to integrate them into social media graphics, presentations, and unique art projects...</p>
+                <a href="#">Read More</a>
+            </div>
+            <div class="blog-post">
+                <h4>The Importance of High-Resolution Images for Background Removal</h4>
+                <p>Understand why using high-quality source images leads to the best background removal results and how to ensure your photos are ready for ClearCut...</p>
+                <a href="#">Read More</a>
+            </div>
+            <div class="blog-post">
+                <h4>Quick Guide: Removing Backgrounds for Professional Headshots</h4>
+                <p>Transform your portrait photos into professional headshots by easily removing distracting backgrounds. Perfect for LinkedIn and resumes...</p>
+                <a href="#">Read More</a>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about-section">
+            <h2>About ClearCut</h2>
+            <p>At ClearCut, we believe that professional image editing should be accessible to everyone. Our mission is to provide a fast, reliable, and easy-to-use tool for instant background removal, empowering individuals and businesses to create stunning visuals without the need for complex software or advanced skills.</p>
+            <p>Developed with cutting-edge AI technology, ClearCut is designed to deliver high-quality results every time, helping you save time and focus on your creative vision. We are committed to continuous improvement and providing a seamless experience for all our users.</p>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="content-list">
+                <ul>
+                    <li>
+                        <strong>Q: Is ClearCut really free?</strong>
+                        <p>A: Yes, ClearCut offers up to 50 free background removals per month. This allows you to process a significant number of images for personal or small business use without any cost. For higher volumes, you would need to explore paid options with the underlying API provider (remove.bg).</p>
+                    </li>
+                    <li>
+                        <strong>Q: What image formats does ClearCut support?</strong>
+                        <p>A: ClearCut currently supports common image formats including JPG, PNG, and WEBP for background removal.</p>
+                    </li>
+                    <li>
+                        <strong>Q: How accurate is the background removal?</strong>
+                        <p>A: ClearCut utilizes advanced AI algorithms to ensure highly accurate and precise background removal, even with complex edges like hair or intricate details. Results are typically professional-grade.</p>
+                    </li>
+                    <li>
+                        <strong>Q: Do I need to download any software?</strong>
+                        <p>A: No, ClearCut is a completely web-based tool. You can access and use it directly from your browser on any device without needing to download or install any software.</p>
+                    </li>
+                    <li>
+                        <strong>Q: What happens to my images after processing?</strong>
+                        <p>A: We prioritize your privacy. Images processed through ClearCut are handled securely and are not stored on our servers longer than necessary for processing. Please refer to our Privacy Policy for more details.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-section">
+            <h2>Contact Us</h2>
+            <p>Have questions, feedback, or need support? We're here to help!</p>
+            <p>You can reach us via email at: <a href="mailto:channel.promote06@gmail.com" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">channel.promote06@gmail.com</a></p>
+            <p>We aim to respond to all inquiries within 24-48 hours.</p>
+        </section>
+
+        <!-- Privacy Policy Section -->
+        <section id="privacy-policy-section">
+            <h2>Privacy Policy</h2>
+            <div class="legal-content">
+                <p><strong>Last Updated: July 8, 2025</strong></p>
+                <p>This Privacy Policy describes how ClearCut ("we," "us," or "our") collects, uses, and discloses your information when you use our website and background removal service (the "Service").</p>
+
+                <h3>Information We Collect</h3>
+                <p>We collect very limited information directly from you:</p>
+                <ul>
+                    <li><strong>Images You Upload:</strong> When you upload an image for background removal, this image is temporarily processed by our Service.</li>
+                    <li><strong>Usage Data:</strong> We track the number of background removal operations performed by your browser to enforce the free usage limit. This data is stored locally in your browser's local storage and is not transmitted to our servers.</li>
+                </ul>
+
+                <h3>How We Use Your Information</h3>
+                <p>We use the images you upload solely for the purpose of performing the requested background removal. We do not store your images on our servers after processing. The usage data is solely used to manage the free tier limits.</p>
+
+                <h3>Third-Party Services</h3>
+                <p>ClearCut utilizes the <a href="https://www.remove.bg" target="_blank" style="color: var(--primary-color); text-decoration: none;">remove.bg</a> API for the actual background removal process. When you upload an image, it is sent to the remove.bg API for processing. We do not control their data handling practices. Please review remove.bg's privacy policy for details on how they handle your data.</p>
+
+                <h3>Data Security</h3>
+                <p>We implement reasonable security measures to protect your information. However, no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your information, we cannot guarantee its absolute security.</p>
+
+                <h3>Changes to This Privacy Policy</h3>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+
+                <h3>Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us:</p>
+                <ul>
+                    <li>By email: support@clearcut.com</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Terms of Service Section -->
+        <section id="terms-of-service-section">
+            <h2>Terms of Service</h2>
+            <div class="legal-content">
+                <p><strong>Last Updated: July 8, 2025</strong></p>
+                <p>Welcome to ClearCut! These Terms of Service ("Terms") govern your use of the ClearCut website and background removal service (the "Service"). By accessing or using the Service, you agree to be bound by these Terms.</p>
+
+                <h3>1. Acceptance of Terms</h3>
+                <p>By using the Service, you agree to these Terms. If you do not agree to these Terms, do not use the Service.</p>
+
+                <h3>2. The Service</h3>
+                <p>ClearCut provides an online tool for automated image background removal. The Service is provided "as is" and "as available." We reserve the right to modify, suspend, or discontinue the Service (or any part thereof) with or without notice at any time.</p>
+
+                <h3>3. Usage Limits</h3>
+                <p>The Service offers a free tier allowing up to 50 background removals per month per browser instance. This limit is tracked locally in your browser's storage. Exceeding this limit will prevent further free usage until the limit resets (typically monthly or upon manual reset of browser data).</p>
+
+                <h3>4. User Responsibilities</h3>
+                <ul>
+                    <li>You agree not to use the Service for any unlawful or prohibited purpose.</li>
+                    <li>You are responsible for the images you upload and must ensure you have the necessary rights or licenses to use and process them.</li>
+                    <li>You agree not to upload images that contain illegal, offensive, or harmful content.</li>
+                    <li>You agree not to attempt to circumvent the usage limits or other security features of the Service.</li>
+                </ul>
+
+                <h3>5. Intellectual Property</h3>
+                <p>You retain all intellectual property rights in the images you upload. We do not claim ownership of your content. ClearCut's name, logo, and Service design are our intellectual property.</p>
+
+                <h3>6. Disclaimer of Warranties</h3>
+                <p>The Service is provided without warranties of any kind, whether express or implied. We do not warrant that the Service will be uninterrupted, error-free, or completely accurate in its background removal results.</p>
+
+                <h3>7. Limitation of Liability</h3>
+                <p>To the fullest extent permitted by law, ClearCut shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (a) your access to or use of or inability to access or use the Service; (b) any conduct or content of any third party on the Service; or (c) unauthorized access, use, or alteration of your transmissions or content.</p>
+
+                <h3>8. Governing Law</h3>
+                <p>These Terms shall be governed and construed in accordance with the laws of [Your Country/State, e.g., "California, United States"], without regard to its conflict of law provisions.</p>
+
+                <h3>9. Changes to Terms</h3>
+                <p>We reserve the right to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+
+                <h3>10. Contact Information</h3>
+                <p>If you have any questions about these Terms, please contact us at support@clearcut.com.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ClearCut. All rights reserved. | <a href="#privacy-policy" data-section="privacy-policy-section">Privacy Policy</a> | <a href="#terms-of-service" data-section="terms-of-service-section">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        // --- DOM Element References ---
+        const dropZone = document.getElementById('dropZone');
+        const imageInput = document.getElementById('imageInput');
+        const removeBgBtn = document.getElementById('removeBgBtn');
+        const outputCanvas = document.getElementById('outputCanvas');
+        const downloadLink = document.getElementById('downloadLink');
+        const errorMessage = document.getElementById('errorMessage');
+        const statusMessage = document.getElementById('statusMessage');
+        const usageCountMessage = document.getElementById('usageCountMessage');
+        const navLinks = document.querySelectorAll('nav a');
+        const sections = document.querySelectorAll('main section');
+        const homeLogoLink = document.getElementById('homeLogoLink');
+        const main = document.querySelector('main'); // Added this line to define 'main'
+
+        // --- Global Variables ---
+        let originalImageFile = null;
+        const API_KEY = 'DV9oCFDAor5zt7K1beKnCzU4'; // YOUR REMOVE.BG API KEY
+        // WARNING: Storing API keys directly in client-side code is INSECURE.
+        // For a production application, you should always use a backend proxy
+        // to make API calls, keeping your API key secret on the server.
+        // This is done here only to fulfill the user's explicit request for a self-contained HTML file.
+
+        const MAX_FREE_CALLS = 50;
+        let apiCallCount = parseInt(localStorage.getItem('clearCutApiCallCount') || '0', 10);
+
+        // --- Helper Functions ---
+
+        /**
+         * Displays a message on the UI.
+         * @param {HTMLElement} element - The DOM element to display the message in.
+         * @param {string} message - The text message to display.
+         * @param {string} type - The type of message ('error', 'loading', 'info').
+         */
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.style.display = 'block';
+        }
+
+        /**
+         * Hides a message element.
+         * @param {HTMLElement} element - The DOM element to hide.
+         */
+        function hideMessage(element) {
+            element.style.display = 'none';
+        }
+
+        /**
+         * Updates the API usage count message.
+         */
+        function updateUsageCountMessage() {
+            const remaining = MAX_FREE_CALLS - apiCallCount;
+            if (remaining <= 0) {
+                showMessage(usageCountMessage, `Free usage limit reached (${MAX_FREE_CALLS} removals). Please consider supporting remove.bg for more.`, 'error');
+                removeBgBtn.disabled = true;
+            } else {
+                showMessage(usageCountMessage, `Free removals remaining this month: ${remaining} out of ${MAX_FREE_CALLS}`, 'info');
+                removeBgBtn.disabled = originalImageFile === null; // Re-enable if an image is loaded
+            }
+        }
+
+        /**
+         * Handles file selection/drop, loads image, and enables/disables buttons.
+         * @param {File} file - The image file to process.
+         */
+        function handleFile(file) {
+            hideMessage(errorMessage);
+            hideMessage(statusMessage);
+            downloadLink.style.display = 'none';
+            removeBgBtn.disabled = true;
+            outputCanvas.style.display = 'none'; // Hide previous output
+
+            if (file && file.type.startsWith('image/')) {
+                originalImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const ctx = outputCanvas.getContext('2d');
+                        outputCanvas.width = img.width;
+                        outputCanvas.height = img.height;
+                        ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height); // Clear previous drawing
+                        ctx.drawImage(img, 0, 0);
+                        outputCanvas.style.display = 'block';
+                        updateUsageCountMessage(); // Check count and enable button
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                showMessage(errorMessage, 'Please upload a valid image file (PNG, JPG, WEBP).', 'error');
+                originalImageFile = null;
+                updateUsageCountMessage(); // Update message and disable button
+            }
+        }
+
+        /**
+         * Handles navigation between different sections of the website.
+         * @param {string} sectionId - The ID of the section to activate.
+         */
+        function navigateToSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                // Scroll to the top of the main content area for better UX
+                main.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Drop Zone functionality
+        dropZone.addEventListener('click', () => imageInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        // Image Input change
+        imageInput.addEventListener('change', () => {
+            if (imageInput.files.length > 0) {
+                handleFile(imageInput.files[0]);
+            }
+        });
+
+        // Remove Background Button click
+        removeBgBtn.addEventListener('click', async () => {
+            if (!originalImageFile) {
+                showMessage(errorMessage, 'No image selected for background removal.', 'error');
+                return;
+            }
+
+            if (apiCallCount >= MAX_FREE_CALLS) {
+                showMessage(errorMessage, `You've reached your free usage limit of ${MAX_FREE_CALLS} removals.`, 'error');
+                removeBgBtn.disabled = true;
+                return;
+            }
+
+            removeBgBtn.disabled = true;
+            hideMessage(errorMessage);
+            downloadLink.style.display = 'none';
+            showMessage(statusMessage, 'Processing image, please wait...', 'loading');
+
+            try {
+                const formData = new FormData();
+                formData.append('image_file', originalImageFile);
+                formData.append('size', 'auto');
+
+                const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                    method: 'POST',
+                    headers: {
+                        'X-Api-Key': API_KEY
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    let errorMsg = 'Failed to process image.';
+                    if (errorData && errorData.errors && errorData.errors.length > 0) {
+                        errorMsg = errorData.errors[0].title || errorMsg;
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                const blob = await response.blob();
+                const img = new Image();
+                img.onload = () => {
+                    const ctx = outputCanvas.getContext('2d');
+                    outputCanvas.width = img.width;
+                    outputCanvas.height = img.height;
+                    ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    outputCanvas.style.display = 'block';
+
+                    downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.download = 'clearcut_background_removed.png';
+                    downloadLink.style.display = 'inline-block';
+                    downloadLink.textContent = 'Download Image';
+                    
+                    hideMessage(statusMessage);
+
+                    // Increment API call count on successful removal
+                    apiCallCount++;
+                    localStorage.setItem('clearCutApiCallCount', apiCallCount.toString());
+                    updateUsageCountMessage(); // Update message and button state
+
+                    removeBgBtn.disabled = false; // Re-enable button after successful process
+                };
+                img.src = URL.createObjectURL(blob);
+            } catch (error) {
+                hideMessage(statusMessage);
+                showMessage(errorMessage, `Error: ${error.message}. Please try again.`, 'error');
+                removeBgBtn.disabled = false; // Re-enable button even on error
+                updateUsageCountMessage(); // Ensure usage message is correct
+            }
+        });
+
+        // Navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.dataset.section;
+                if (sectionId) {
+                    navigateToSection(sectionId);
+                } else {
+                    // Handle special cases like "Contact" if it's not a full section
+                    // For now, it will just show the contact-section
+                    const href = link.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        const targetId = href.substring(1);
+                        if (document.getElementById(targetId + '-section')) { // Check if a section with -section exists
+                            navigateToSection(targetId + '-section');
+                        } else if (document.getElementById(targetId)) { // Fallback to direct ID if no -section
+                             // This handles the legal links in the footer
+                             navigateToSection(targetId);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Handle logo click to go to home section
+        homeLogoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateToSection('home-section');
+        });
+
+        // Handle footer legal links
+        document.querySelectorAll('footer a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.dataset.section || link.getAttribute('href').substring(1);
+                navigateToSection(sectionId);
+            });
+        });
+
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUsageCountMessage(); // Display initial usage count
+            // Set initial active section based on URL hash or default to home
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash + '-section')) {
+                navigateToSection(hash + '-section');
+            } else if (hash && document.getElementById(hash)) { // For legal pages
+                navigateToSection(hash);
+            }
+            else {
+                navigateToSection('home-section');
+            }
+        });
+    </script>
+</body>
+</html>
